@@ -2,8 +2,10 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.max
 import kotlin.math.sqrt
+import kotlin.math.abs
 
 /**
  * Пример
@@ -85,7 +87,17 @@ fun ageDescription(age: Int): String {
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val way1 = t1 * v1
+    val way2 = t2 * v2
+    val way3 = t3 * v3
+    val halfway = (way1 + way2 + way3) / 2
+
+    if (halfway <= way1) return (halfway / v1)
+    else if (halfway >= way1 && halfway <= way1 + way2) return (t1 + (halfway - way1) / v2)
+    else if (halfway >= way2 && halfway <= way1 + way2 + way3) return (t1 + t2 + (halfway - way1 - way2) / v3)
+    else return Double.NaN
+}
 
 /**
  * Простая
@@ -98,7 +110,16 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    return when {
+        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
+        kingX == rookX1 || kingY == rookY1 -> 1
+        kingX == rookX2 || kingY == rookY2 -> 2
+
+        else -> 0
+    }
+
+}
 
 /**
  * Простая
@@ -112,7 +133,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int  {
+    return when {
+        (kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))-> 3
+        kingX == rookX || kingY == rookY -> 1
+        Math.abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
+        else -> 0
+    }
+}
 
 /**
  * Простая
@@ -121,8 +149,29 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Проверить, является ли данный треугольник остроугольным (вернуть 0),
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
+с² < a²+b² остроугольный 0
+с²=a²+b² прямоугольный 1
+с² > a²+b² тупоугольный 2
+с < a+b
+c > a- b ( гдеc > а > b)
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val temp :Double
+    if (a > c) {
+        temp = c
+        c = a
+        a = temp}
+
+    if (c < a + b && c > a - b && a > b) {
+        return when {
+            sqr(c) < sqr(a) + sqr(b) -> 0
+            sqr(c) == sqr(a) + sqr(b) -> 1
+            sqr(c) > sqr(a) + sqr(b) -> 2
+            else -> -1
+        }
+    }
+    else return -1
+}
 
 /**
  * Средняя
@@ -133,3 +182,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+
+
+
