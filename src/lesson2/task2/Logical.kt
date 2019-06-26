@@ -2,6 +2,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
 
 /**
  * Пример
@@ -17,7 +18,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean = (number%10000/1000 + number%1000/100) == (number%100/10 + number%10)
 
 /**
  * Простая
@@ -26,7 +27,7 @@ fun isNumberHappy(number: Int): Boolean = TODO()
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (x1 == x2 || y1 == y2) || (abs(x1 - x2) == abs(y1 - y2))
 
 
 /**
@@ -34,8 +35,35 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  *
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
+ *
+ * 1. Год не делится на 4 - не относится к високосным (кроме случаев, которые рассмотрены ниже).
+ * 2. Год делится на 100 - не будет високосным, даже если он был успешно разделен на 4.
+ * Но здесь тоже могут быть исключения. Для точного расчета выполните шаг 3.
+ * 3. Год, значение которого оказалось кратным 4 и 100, надо разделить на 400. Если оно разделится без остатка, значит год всё-таки високосный!
  */
-fun daysInMonth(month: Int, year: Int): Int = TODO()
+fun daysInMonth(month: Int, year: Int): Int {
+    if(month == 2
+            && (year%4 ==0 && (year%100 != 0 || year%400 == 0)) //определяем что год высокосный
+    ) {
+        return 29
+    }
+    else return when(month) {
+        1 -> 31
+        2 -> 28
+        3 -> 31
+        4 -> 30
+        5 -> 31
+        6 -> 30
+        7 -> 31
+        8 -> 31
+        9 -> 30
+        10 -> 31
+        11 -> 30
+        12 -> 31
+        else -> 0
+
+    }
+}
 
 /**
  * Средняя
@@ -45,7 +73,12 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean {
+    if (pointInsideCircle(x1,y1,x2,y2,r2)){
+        return true
+    }
+    else return false
+}
 
 /**
  * Средняя
