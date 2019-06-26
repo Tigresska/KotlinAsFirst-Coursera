@@ -156,21 +156,32 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
 c > a- b ( гдеc > а > b)
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val temp :Double
-    if (a > c) {
-        temp = c
-        c = a
-        a = temp}
-
-    if (c < a + b && c > a - b && a > b) {
+    if (c >= a && c >= b && c < a + b) {
         return when {
-            sqr(c) < sqr(a) + sqr(b) -> 0
-            sqr(c) == sqr(a) + sqr(b) -> 1
-            sqr(c) > sqr(a) + sqr(b) -> 2
+            sqr(a) + sqr(b) - sqr(c) > 0.0 -> 0
+            sqr(a) + sqr(b) - sqr(c) == 0.0 -> 1
+            sqr(a) + sqr(b) - sqr(c) < 0.0 -> 2
+            else -> -1
+        }
+    }
+    else if (b >= a && b >= c && a + c > b) {
+        return when {
+            sqr(a) + sqr(c) - sqr(b) > 0.0 -> 0
+            sqr(a) + sqr(c) - sqr(b) == 0.0 -> 1
+            sqr(a) + sqr(c) - sqr(b) < 0.0 -> 2
+            else -> -1
+        }
+    }
+    else if (a >= b && a >= c && b + c > a) {
+        return when {
+            sqr(b) + sqr(c) - sqr(a) > 0.0 -> 0
+            sqr(b) + sqr(c) - sqr(a) == 0.0 -> 1
+            sqr(b) + sqr(c) - sqr(a) < 0.0 -> 2
             else -> -1
         }
     }
     else return -1
+
 }
 
 /**
